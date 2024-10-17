@@ -8,7 +8,7 @@ on:
 jobs:
   setup-build-deploy:
     name: Deploy Website
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04-ppc64le
 
     strategy:
       matrix:
@@ -22,6 +22,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
+        architecture: ppc64le
         node-version: ${{ matrix.node-version }}
 
     - name: Install PNPM
@@ -33,13 +34,13 @@ jobs:
     - name: Build Website
       run: pnpm website:build
 
-    - name: Publish to Cloudflare Pages
-      uses: cloudflare/pages-action@1
-      with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: b09b24c345713c704e71dea8bd81f713
-        projectName: cacheableorg
-        branch: main
-        directory: packages/website/dist
-        gitHubToken: ${{ secrets.GH_TOKEN }}
-        wranglerVersion: '3'
+    # - name: Publish to Cloudflare Pages
+    #   uses: cloudflare/pages-action@1
+    #   with:
+    #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    #     accountId: b09b24c345713c704e71dea8bd81f713
+    #     projectName: cacheableorg
+    #     branch: main
+    #     directory: packages/website/dist
+    #     gitHubToken: ${{ secrets.GH_TOKEN }}
+    #     wranglerVersion: '3'
